@@ -1,0 +1,32 @@
+{
+    "name": "ampeco/omnipay-midtrans",
+    "description": "Omnipay plugin for https://docs.midtrans.com",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ampeco\\OmnipayMidtrans\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Alexiev",
+            "email": "alexander.alexiev@ampeco.com"
+        },
+        {
+            "name": "Tihomir Tonov",
+            "email": "tihomir.tonov@ampeco.com"
+        },
+        {
+            "name": "Kristian Antonov",
+            "email": "kristian.antonov@ampeco.com"
+        },
+        {
+            "name": "Nikolay Mikov",
+            "email": "nikolay.mikov@ampeco.com"
+        }
+    ],
+    "require": {
+        "omnipay/common": "^3"
+    }
+}
