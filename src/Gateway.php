@@ -22,6 +22,8 @@ class Gateway extends AbstractGateway
 {
     use CommonParameters;
 
+    const STATUS_SUCCESS = '00';
+
     public function getName()
     {
         return 'Midtrans';
@@ -34,7 +36,7 @@ class Gateway extends AbstractGateway
 
     public function getCreateCardCurrency()
     {
-        return 'IND';
+        return 'INR';
     }
 
     public function createCard(array $options = []): AbstractRequest

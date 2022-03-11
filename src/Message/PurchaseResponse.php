@@ -2,17 +2,12 @@
 
 namespace Ampeco\OmnipayMidtrans\Message;
 
+use Ampeco\OmnipayMidtrans\Gateway;
+
 class PurchaseResponse extends Response
 {
-    const STATUS_SUCCESS = 'success';
-
-    public function getStatus()
-    {
-        return @$this->data['payme_status'];
-    }
-
     public function isSuccessful()
     {
-        return parent::isSuccessful() && $this->getStatus() === self::STATUS_SUCCESS;
+        return parent::isSuccessful() && $this->getCode() === Gateway::STATUS_SUCCESS;
     }
 }

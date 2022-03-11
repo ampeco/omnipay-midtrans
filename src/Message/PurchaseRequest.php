@@ -16,26 +16,26 @@ class PurchaseRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        return 'generate-sale';
+        return 'charge';
     }
 
     public function getData()
     {
-        $this->validate('token', 'transactionId', 'amount', 'currency', 'description');
+        $this->validate('token', 'transactionId', 'amount');
 
         $params = [
-            'seller_payme_id' => $this->getSellerId(),
-            'sale_price' => $this->getAmountInteger(),
-            'currency' => $this->getCurrency(),
-            'product_name' => $this->getDescription(),
-            'installments' => 1,
-            'transaction_id' => $this->getTransactionId(),
-            'sale_send_notification' => false,
-            'buyer_key' => $this->getToken(),
+            'payment_type' => 'credit_card',
+            'transaction_details' => [
+                'order_id' => $this->getTransactionId(),
+                'gross_amount' => $this->getAmount(),
+            ],
+            'credit_card' => [
+                'token_id' => $this->getToken(),
+            ],
         ];
 
         if ($this->getHold()) {
-            $params['sale_type'] = 'authorize';
+            $params['type'] = 'authorize';
         }
 
         return $params;

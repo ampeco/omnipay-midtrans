@@ -2,71 +2,79 @@
 
 namespace Ampeco\OmnipayMidtrans\Message;
 
+use Ampeco\OmnipayMidtrans\Gateway;
+
 class SaleNotification extends BaseNotification
 {
-    // "payme_status": "success",
-    // "status_error_code": "0",
-    // "status_code": "0",
-    // "payme_sale_id": "SALE1639-062536VW-AMFN64XO-K1KQKUA5",
-    // "payme_sale_code": "848956",
-    // "sale_created": "2021-12-09 17:08:56",
-    // "payme_sale_status": "completed",
-    // "sale_status": "completed",
-    // "currency": "USD",
-    // "transaction_id": "5a55351ceb",
-    // "is_token_sale": "1",
-    // "price": "100",
-    // "payme_signature": "46a34aee56f13adab8d8c931469041b7",
-    // "payme_transaction_id": "TRAN1639-062569QB-XNLB6RAP-6ZXXGILP",
-    // "payme_transaction_total": "100",
-    // "payme_transaction_card_brand": "Visa",
-    // "payme_transaction_auth_number": "9743923",
-    // "payme_transaction_voucher": "1001",
-    // "buyer_name": "John Doe",
-    // "buyer_email": "john.doe@example.com",
-    // "buyer_phone": "2222222",
-    // "buyer_card_mask": "420000******0000",
-    // "buyer_card_exp": "0222",
-    // "buyer_card_is_foreign": "1",
-    // "buyer_social_id": "99994",
-    // "installments": "1",
-    // "sale_paid_date": "2021-12-09 17:09:29",
-    // "buyer_key": "BUYER160-4342521O-ZQRZLKA8-EDQNCYCH",
-    // "notify_type": "sale-complete"
+    // "transaction_time": "2022-03-11 21:57:09",
+    // "transaction_status": "capture",
+    // "transaction_id": "f858b827-52ab-4637-b875-9e8ef9623eb1",
+    // "status_message": "midtrans payment notification",
+    // "status_code": "200",
+    // "signature_key": "0e678f13c9d1e04f085fb5afb1a2b30de139ea6f1397a3de08be8883bf2c8d835cf2a436532e90b201e4d64ad8987bab917e6fa4fa6ecbca88ea4e63f20ad550",
+    // "saved_token_id_expired_at": "2025-01-31 07:00:00",
+    // "saved_token_id": "481111zOsEMHJabjlisRWSsEgeHH1114",
+    // "payment_type": "credit_card",
+    // "order_id": "48f4a35aeb",
+    // "merchant_id": "G337066901",
+    // "masked_card": "481111-1114",
+    // "gross_amount": "1.00",
+    // "fraud_status": "accept",
+    // "eci": "05",
+    // "currency": "IDR",
+    // "channel_response_message": "Approved",
+    // "channel_response_code": "00",
+    // "card_type": "credit",
+    // "bank": "bni",
+    // "approval_code": "1647010645548"
+
+    public function isSuccessful(): bool
+    {
+        return parent::isSuccessful() && $this->getCode() === Gateway::STATUS_SUCCESS;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->data['channel_response_code'];
+    }
 
     public function isForTokenization(): bool
     {
-        return $this->getToken() !== null
-            && $this->data['notify_type'] === 'sale-complete';
+        return $this->getToken() !== null;
     }
 
     public function getToken(): ?string
     {
-        return @$this->data['buyer_key'];
+        return @$this->data['saved_token_id'];
     }
 
-    public function getCardBrand(): string
+    public function getCardLastFour(): string
     {
-        return $this->data['payme_transaction_card_brand'];
+        return substr($this->getCardNumber(), -4);
+    }
+
+    public function getCardFirstSix(): string
+    {
+        return substr($this->getCardNumber(), 0, 6);
     }
 
     public function getCardNumber(): string
     {
-        return $this->data['buyer_card_mask'];
+        return $this->data['masked_card'];
     }
 
     public function getExpirationMonth(): int
     {
-        return intval(substr($this->getExpireDate(), 0, 2));
+        return intval(date('m', strtotime($this->getExpireDate())));
     }
 
     public function getExpirationYear(): int
     {
-        return 2000 + intval(substr($this->getExpireDate(), -2));
+        return intval(date('Y', strtotime($this->getExpireDate())));
     }
 
     public function getExpireDate(): string
     {
-        return $this->data['buyer_card_exp'];
+        return $this->data['saved_token_id_expired_at'];
     }
 }

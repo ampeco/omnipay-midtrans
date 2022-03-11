@@ -32,7 +32,7 @@ class BaseNotification implements NotificationInterface
 
     public function getTransactionReference()
     {
-        return @$this->data['payme_sale_id'];
+        return @$this->data['transaction_id'];
     }
 
     public function isSuccessful(): bool
