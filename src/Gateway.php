@@ -36,7 +36,7 @@ class Gateway extends AbstractGateway
 
     public function getCreateCardCurrency()
     {
-        return 'INR';
+        return 'IDR';
     }
 
     public function createCard(array $options = []): AbstractRequest
