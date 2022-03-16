@@ -6,17 +6,16 @@ class CaptureRequest extends AbstractRequest
 {
     public function getEndpoint()
     {
-        return 'capture-sale';
+        return 'capture';
     }
 
     public function getData()
     {
-        $this->validate('amount');
+        $this->validate('amount', 'transactionReference');
 
         return [
-            'payme_sale_id' => $this->getTransactionReference(),
-            'sale_price' => $this->getAmountInteger(),
-            'installments' => 1,
+            'transaction_id' => $this->getTransactionReference(),
+            'gross_amount' => $this->getAmount(),
         ];
     }
 }

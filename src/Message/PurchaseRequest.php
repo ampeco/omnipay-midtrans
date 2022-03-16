@@ -30,12 +30,13 @@ class PurchaseRequest extends AbstractRequest
                 'gross_amount' => $this->getAmount(),
             ],
             'credit_card' => [
+                'secure' => true,
                 'token_id' => $this->getToken(),
             ],
         ];
 
         if ($this->getHold()) {
-            $params['type'] = 'authorize';
+            $params['credit_card']['type'] = 'authorize';
         }
 
         return $params;

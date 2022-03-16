@@ -31,7 +31,7 @@ class Gateway extends AbstractGateway
 
     public function getCreateCardAmount()
     {
-        return 1;
+        return 1000;
     }
 
     public function getCreateCardCurrency()
@@ -71,11 +71,11 @@ class Gateway extends AbstractGateway
 
     public function acceptNotification(array $options = []): SaleNotification
     {
-        return new SaleNotification($options);
+        return new SaleNotification($options, $this->getServerKey());
     }
 
     public function acceptRedirectedBack(array $options = []): RedirectedBackNotification
     {
-        return new RedirectedBackNotification($options);
+        return new RedirectedBackNotification($options, $this->getServerKey());
     }
 }

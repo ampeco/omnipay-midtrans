@@ -33,6 +33,18 @@ class SaleNotification extends BaseNotification
         return parent::isSuccessful() && $this->getCode() === Gateway::STATUS_SUCCESS;
     }
 
+    public function hasValidSignature(): bool
+    {
+        $input = implode([
+            $this->data['order_id'],
+            $this->data['status_code'],
+            $this->data['gross_amount'],
+            $this->serverKey,
+        ]);
+
+        return openssl_digest($input, 'sha512') === $this->data['signature_key'];
+    }
+
     public function getCode(): ?string
     {
         return $this->data['channel_response_code'];

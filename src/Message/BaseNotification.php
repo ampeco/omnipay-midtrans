@@ -9,10 +9,12 @@ class BaseNotification implements NotificationInterface
     const STATUS_SUCCESS = 200;
 
     protected $data;
+    protected $serverKey;
 
-    public function __construct($data)
+    public function __construct($data, $serverKey)
     {
         $this->data = $data;
+        $this->serverKey = $serverKey;
     }
 
     public function getTransactionStatus(): int
